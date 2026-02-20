@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Orders Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f6f9;
+        }
+
+        h2 {
+            color: darkblue;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+            background: white;
+        }
+
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #2c3e50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        .summary {
+            margin-top: 20px;
+            font-weight: bold;
+            color: darkgreen;
+        }
+    </style>
+</head>
+<body>
+
+<h2>Orders Dashboard</h2>
+
+<table id="ordersTable">
+    <thead>
+        <tr>
+            <th>Customer Name</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total (₹)</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<div class="summary">
+    <p id="highest"></p>
+    <p id="activeCustomer"></p>
+</div>
+
+<script>
+let customers = [
+    {id:1, name:"Balaji"},
+    {id:2, name:"Ravi"}
+];
+
+let products = [
+    {id:1, name:"Laptop", price:50000},
+    {id:2, name:"Mobile", price:20000}
+];
+
+let orders = [
+    {cust:1, prod:1, qty:1},
+    {cust:1, prod:2, qty:2},
+    {cust:2, prod:2, qty:1}
+];
+
+let maxOrderValue = 0;
+let customerActivity = {};
+let tbody = document.querySelector("#ordersTable tbody");
+
+orders.forEach(order => {
+    let customer = customers.find(c => c.id === order.cust);
+    let product = products.find(p => p.id === order.prod);
+    let total = product.price * order.qty;
+
+    // Create table row
+    let row = `
+        <tr>
+            <td>${customer.name}</td>
+            <td>${product.name}</td>
+            <td>${order.qty}</td>
+            <td>${total}</td>
+        </tr>
+    `;
+    tbody.innerHTML += row;
+
+    // Highest order
+    if (total > maxOrderValue) {
+        maxOrderValue = total;
+    }
+
+    // Count activity
+    customerActivity[order.cust] =
+        (customerActivity[order.cust] || 0) + 1;
+});
+
+// Show highest order
+document.getElementById("highest").innerHTML =
+    "Highest Order Value: ₹" + maxOrderValue;
+
+// Find most active customer
+let mostActiveId = Object.keys(customerActivity)
+    .reduce((a,b) =>
+        customerActivity[a] > customerActivity[b] ? a : b
+    );
+
+let mostActiveCustomer =
+    customers.find(c => c.id == mostActiveId);
+
+document.getElementById("activeCustomer").innerHTML =
+    "Most Active Customer: " + mostActiveCustomer.name;
+
+</script>
+
+</body>
+</html>

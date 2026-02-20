@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Payment System</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: #fff;
+            width: 380px;
+            padding: 25px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .balances {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .box {
+            flex: 1;
+            margin: 5px;
+            padding: 15px;
+            border-radius: 10px;
+            color: white;
+        }
+
+        .user {
+            background: #28a745;
+        }
+
+        .merchant {
+            background: #007bff;
+        }
+
+        .amount {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(to right, #ff512f, #dd2476);
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        button:hover {
+            opacity: 0.9;
+        }
+
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            border-radius: 8px;
+            font-weight: bold;
+            display: none;
+        }
+
+        .success {
+            background: #d4edda;
+            color: #155724;
+        }
+
+        .fail {
+            background: #f8d7da;
+            color: #721c24;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>💳 Digital Payment</h2>
+
+    <div class="balances">
+        <div class="box user">
+            User Balance
+            <div class="amount" id="userBal">₹1000</div>
+        </div>
+
+        <div class="box merchant">
+            Merchant Balance
+            <div class="amount" id="merchantBal">₹2000</div>
+        </div>
+    </div>
+
+    <button onclick="pay()">Pay ₹500</button>
+
+    <div id="messageBox" class="message"></div>
+</div>
+
+<script>
+let userBalance = 1000;
+let merchantBalance = 2000;
+
+function pay() {
+    let msg = document.getElementById("messageBox");
+
+    if (userBalance >= 500) {
+        userBalance -= 500;
+        merchantBalance += 500;
+
+        msg.className = "message success";
+        msg.innerHTML = "✅ Transaction Successful!";
+    } else {
+        msg.className = "message fail";
+        msg.innerHTML = "❌ Transaction Failed! Insufficient Balance.";
+    }
+
+    msg.style.display = "block";
+
+    document.getElementById("userBal").innerHTML = "₹" + userBalance;
+    document.getElementById("merchantBal").innerHTML = "₹" + merchantBalance;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Activity Tracker</title>
+    <style>
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to right, #667eea, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .container {
+            background: white;
+            padding: 25px;
+            width: 450px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        button {
+            padding: 8px 15px;
+            margin: 5px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            color: white;
+        }
+
+        .buy { background: #28a745; }
+        .pay { background: #007bff; }
+        .login { background: #ff9800; }
+        .order { background: #9c27b0; }
+
+        table {
+            width: 100%;
+            margin-top: 20px;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            text-align: center;
+        }
+
+        th {
+            background: #333;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background: #f2f2f2;
+        }
+
+        .empty {
+            margin-top: 15px;
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>📊 Activity Tracker</h2>
+
+    <button class="buy" onclick="add('Buying Item')">Buy</button>
+    <button class="pay" onclick="add('Payment Done')">Payment</button>
+    <button class="login" onclick="add('User Login')">Login</button>
+    <button class="order" onclick="add('Order Placed')">Order</button>
+
+    <div id="log"></div>
+</div>
+
+<script>
+let logs = [];
+
+function add(type){
+    let dateTime = new Date().toLocaleString();
+    logs.push({type, dateTime});
+    show();
+}
+
+function show(){
+    if(logs.length === 0){
+        document.getElementById("log").innerHTML =
+            "<p class='empty'>No activities yet</p>";
+        return;
+    }
+
+    let table = `
+        <table>
+            <tr>
+                <th>Activity</th>
+                <th>Date & Time</th>
+            </tr>
+    `;
+
+    logs.forEach(l => {
+        table += `
+            <tr>
+                <td>${l.type}</td>
+                <td>${l.dateTime}</td>
+            </tr>
+        `;
+    });
+
+    table += "</table>";
+
+    document.getElementById("log").innerHTML = table;
+}
+</script>
+
+</body>
+</html>

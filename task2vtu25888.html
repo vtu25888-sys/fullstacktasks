@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Dashboard</h2>
+
+Filter:
+<select id="filter" onchange="display()">
+<option value="">All</option>
+<option>CSE</option><option>ECE</option><option>MECH</option>
+</select>
+
+<button onclick="sort('name')">Sort Name</button>
+<button onclick="sort('dob')">Sort DOB</button>
+
+<table border="1" width="100%">
+<tr><th>Name</th><th>DOB</th><th>Dept</th></tr>
+<tbody id="list"></tbody>
+</table>
+
+<h3>Department Count</h3>
+<div id="count"></div>
+
+<script>
+let students=JSON.parse(localStorage.getItem("students"))||[];
+
+function display(){
+let f=filter.value;
+let rows="";
+let deptCount={};
+students.forEach(s=>{
+deptCount[s.dept]=(deptCount[s.dept]||0)+1;
+if(f==""||s.dept==f){
+rows+=`<tr><td>${s.name}</td><td>${s.dob}</td><td>${s.dept}</td></tr>`;
+}
+});
+list.innerHTML=rows;
+
+let text="";
+for(let d in deptCount){
+text+=d+" : "+deptCount[d]+"<br>";
+}
+count.innerHTML=text;
+}
+
+function sort(field){
+students.sort((a,b)=>a[field]>b[field]?1:-1);
+localStorage.setItem("students",JSON.stringify(students));
+display();
+}
+display();
+</script>
+
+</body>
+</html>

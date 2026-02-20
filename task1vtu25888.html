@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Student Registration</title>
+<style>
+body{font-family:Arial;padding:20px}
+input,select,button{margin:5px;padding:6px}
+table{border-collapse:collapse;width:100%}
+th,td{border:1px solid #000;padding:8px;text-align:center}
+</style>
+</head>
+<body>
+
+<h2>Student Registration</h2>
+
+<input id="name" placeholder="Name">
+<input id="email" placeholder="Email">
+<input type="date" id="dob">
+<select id="dept">
+<option>CSE</option><option>ECE</option><option>MECH</option>
+</select>
+<input id="phone" placeholder="Phone">
+<button onclick="save()">Save</button>
+
+<table>
+<tr><th>Name</th><th>Email</th><th>DOB</th><th>Dept</th><th>Phone</th></tr>
+<tbody id="data"></tbody>
+</table>
+
+<script>
+let students=JSON.parse(localStorage.getItem("students"))||[];
+
+function save(){
+let s={
+name:name.value,
+email:email.value,
+dob:dob.value,
+dept:dept.value,
+phone:phone.value
+};
+students.push(s);
+localStorage.setItem("students",JSON.stringify(students));
+show();
+}
+
+function show(){
+let rows="";
+students.forEach(s=>{
+rows+=`<tr><td>${s.name}</td><td>${s.email}</td>
+<td>${s.dob}</td><td>${s.dept}</td><td>${s.phone}</td></tr>`;
+});
+data.innerHTML=rows;
+}
+show();
+</script>
+
+</body>
+</html>

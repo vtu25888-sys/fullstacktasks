@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Star Feedback Form</title>
+<style>
+body{
+    font-family: Arial, sans-serif;
+    background: linear-gradient(to right, #74ebd5, #acb6e5);
+    padding: 30px;
+}
+
+.container{
+    background: white;
+    padding: 20px;
+    border-radius: 10px;
+    width: 420px;
+    margin: auto;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+}
+
+h2{
+    text-align: center;
+}
+
+input{
+    width: 100%;
+    padding: 8px;
+    margin: 8px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+button{
+    width: 100%;
+    padding: 10px;
+    background: #28a745;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+button:hover{
+    background: #218838;
+}
+
+/* ⭐ Star Style */
+.stars{
+    text-align: center;
+    margin: 10px 0;
+}
+
+.star{
+    font-size: 25px;
+    cursor: pointer;
+    color: gray;
+}
+
+.star.active{
+    color: gold;
+}
+
+table{
+    width: 100%;
+    margin-top: 20px;
+    border-collapse: collapse;
+}
+
+th,td{
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: center;
+}
+
+th{
+    background: #333;
+    color: white;
+}
+
+tr:nth-child(even){
+    background: #f2f2f2;
+}
+</style>
+</head>
+<body>
+
+<div class="container">
+<h2>⭐ Feedback Form</h2>
+
+<form onsubmit="submitForm(event)">
+<input id="name" placeholder="Name" required>
+<input id="email" placeholder="Email" required>
+
+<div class="stars">
+    <span class="star" onclick="setRating(1)">★</span>
+    <span class="star" onclick="setRating(2)">★</span>
+    <span class="star" onclick="setRating(3)">★</span>
+    <span class="star" onclick="setRating(4)">★</span>
+    <span class="star" onclick="setRating(5)">★</span>
+</div>
+
+<button type="submit">Submit</button>
+</form>
+
+<div id="output"></div>
+</div>
+
+<script>
+let feedbacks=[];
+let rating=0;
+
+function setRating(num){
+    rating=num;
+    let stars=document.querySelectorAll(".star");
+    stars.forEach((s,i)=>{
+        s.classList.toggle("active", i < num);
+    });
+}
+
+function submitForm(event){
+    event.preventDefault();
+
+    if(rating===0){
+        alert("Please select rating!");
+        return;
+    }
+
+    let name=document.getElementById("name").value;
+    let email=document.getElementById("email").value;
+
+    feedbacks.push({name,email,rating});
+    show();
+
+    document.getElementById("name").value="";
+    document.getElementById("email").value="";
+    rating=0;
+    document.querySelectorAll(".star")
+        .forEach(s=>s.classList.remove("active"));
+}
+
+function show(){
+    let table="<table><tr><th>Name</th><th>Email</th><th>Rating</th></tr>";
+
+    feedbacks.forEach(f=>{
+        let stars="★".repeat(f.rating);
+        table+=`<tr>
+                    <td>${f.name}</td>
+                    <td>${f.email}</td>
+                    <td style="color:gold">${stars}</td>
+                </tr>`;
+    });
+
+    table+="</table>";
+
+    document.getElementById("output").innerHTML=table;
+}
+</script>
+
+</body>
+</html>

@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Login</h2>
+<input id="user" placeholder="Username">
+<input type="password" id="pass" placeholder="Password">
+<button onclick="login()">Login</button>
+
+<p id="msg"></p>
+
+<script>
+let dbUser="admin";
+let dbPass="1234";
+
+function login(){
+if(user.value==""||pass.value==""){
+msg.innerHTML="All fields required";
+return;
+}
+if(user.value==dbUser && pass.value==dbPass){
+msg.innerHTML="Login Success";
+}else{
+msg.innerHTML="Invalid Credentials";
+}
+}
+</script>
+
+</body>
+</html>
