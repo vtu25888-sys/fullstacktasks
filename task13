@@ -1,0 +1,62 @@
+// Task13_ExceptionValidation.java
+import org.springframework.web.bind.annotation.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.*;
+import jakarta.validation.constraints.*;
+import org.springframework.http.*;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import java.util.*;
+
+@SpringBootApplication
+@RestController
+@RequestMapping("/products")
+public class Task13_ExceptionValidation {
+
+    Map<Integer, Product> products = new HashMap<>();
+
+    public static void main(String[] args) {
+        SpringApplication.run(Task13_ExceptionValidation.class, args);
+    }
+
+    @PostMapping
+    public Product addProduct(@RequestBody @jakarta.validation.Valid Product product) {
+        products.put(product.getId(), product);
+        return product;
+    }
+}
+
+class Product {
+
+    @NotNull
+    private Integer id;
+
+    @NotBlank
+    private String name;
+
+    @Min(1)
+    private double price;
+
+    public Integer getId() { return id; }
+    public void setId(Integer id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+}
+
+@RestControllerAdvice
+class GlobalExceptionHandler {
+
+    @ExceptionHandler(MethodArgumentNotValidException.class)
+    public ResponseEntity<Map<String, String>> handleValidationException(
+            MethodArgumentNotValidException ex) {
+
+        Map<String, String> errors = new HashMap<>();
+        ex.getBindingResult().getFieldErrors()
+                .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
+
+        return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
+    }
+}

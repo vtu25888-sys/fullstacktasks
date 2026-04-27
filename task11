@@ -1,0 +1,36 @@
+// Task11_SpringDataJPA.java
+import org.springframework.data.jpa.repository.*;
+import org.springframework.data.domain.*;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.*;
+import jakarta.persistence.*;
+import java.util.*;
+
+@SpringBootApplication
+public class Task11_SpringDataJPA {
+    public static void main(String[] args) {
+        SpringApplication.run(Task11_SpringDataJPA.class, args);
+    }
+}
+
+@Entity
+class Student {
+
+    @Id
+    @GeneratedValue
+    private Long id;
+    private String name;
+    private String department;
+    private int age;
+
+    // getters and setters
+}
+
+interface StudentRepository extends JpaRepository<Student, Long> {
+
+    List<Student> findByDepartment(String department);
+
+    List<Student> findByAgeGreaterThan(int age);
+
+    Page<Student> findAll(Pageable pageable);
+}

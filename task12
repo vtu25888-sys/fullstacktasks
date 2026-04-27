@@ -1,0 +1,55 @@
+// Task12_ProductRESTAPI.java
+import org.springframework.boot.*;
+import org.springframework.boot.autoconfigure.*;
+import org.springframework.web.bind.annotation.*;
+import java.util.*;
+
+@SpringBootApplication
+@RestController
+@RequestMapping("/products")
+public class Task12_ProductRESTAPI {
+
+    Map<Integer, Product> products = new HashMap<>();
+
+    public static void main(String[] args) {
+        SpringApplication.run(Task12_ProductRESTAPI.class, args);
+    }
+
+    @GetMapping
+    public Collection<Product> getProducts() {
+        return products.values();
+    }
+
+    @PostMapping
+    public Product addProduct(@RequestBody Product product) {
+        products.put(product.getId(), product);
+        return product;
+    }
+
+    @PutMapping("/{id}")
+    public Product updateProduct(@PathVariable int id, @RequestBody Product product) {
+        products.put(id, product);
+        return product;
+    }
+
+    @DeleteMapping("/{id}")
+    public String deleteProduct(@PathVariable int id) {
+        products.remove(id);
+        return "Product deleted";
+    }
+}
+
+class Product {
+    private int id;
+    private String name;
+    private double price;
+
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
+
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
+
+    public double getPrice() { return price; }
+    public void setPrice(double price) { this.price = price; }
+}
